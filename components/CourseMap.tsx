@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { LevelNode } from "./LevelNode";
 import { ProgressBar } from "./ProgressBar";
+import { isLevelUnlocked } from "@/lib/courseStore";
 import type { Course } from "@/types";
 
 interface CourseMapProps {
@@ -63,6 +64,7 @@ export function CourseMap({ course }: CourseMapProps) {
                       courseId={course.id}
                       index={levelIndex}
                       isLast={levelIndex === unit.levels.length - 1}
+                      isUnlocked={isLevelUnlocked(course, level.id)}
                     />
                   </div>
                 ))}

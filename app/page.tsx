@@ -137,6 +137,7 @@ export default function HomePage() {
             <UploadZone
               subject={subject}
               onSubjectChange={setSubject}
+              selectedFile={file}
               onFileSelect={(f, pasted) => {
                 setFile(f);
                 setPastedText(pasted);

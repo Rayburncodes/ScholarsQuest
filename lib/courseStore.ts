@@ -109,3 +109,12 @@ export function getCourseWithProgress(courseId: string): Course | null {
   }));
   return { ...course, units };
 }
+
+/** Returns true if the level can be played (first level, or previous level completed). */
+export function isLevelUnlocked(course: Course, levelId: string): boolean {
+  const allLevels = course.units.flatMap((u) => u.levels);
+  const index = allLevels.findIndex((l) => l.id === levelId);
+  if (index < 0) return false;
+  if (index === 0) return true;
+  return allLevels[index - 1].completed === true;
+}

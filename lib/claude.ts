@@ -52,7 +52,7 @@ export async function generateCourseStructure(
   extractedText: string
 ): Promise<ClaudeCourseResponse> {
   const client = getClient();
-  const system = `You are an expert educator. Given study material, extract key topics and subtopics and organize them into a structured course with units and levels. Return ONLY a valid JSON object—no markdown, no code fences, no extra text. Use this exact shape: { "courseName": string, "units": [ { "unitTitle": string, "levels": [ { "levelId": string (unique, e.g. "L1", "L2"), "title": string, "description": string, "keyTopics": string[] } ] } ] }. Create 2-5 units and 2-6 levels per unit. Keep level titles concise.`;
+  const system = `You are an expert educator. Given study material, extract key topics and subtopics and organize them into a structured course with units and levels. Return ONLY a valid JSON object—no markdown, no code fences, no extra text. Use this exact shape: { "courseName": string, "units": [ { "unitTitle": string, "levels": [ { "levelId": string (unique across the whole course, e.g. "L1", "L2", "L3"), "title": string, "description": string, "keyTopics": string[] } ] } ] }. Create 2-5 units and 6-12 levels per unit so each topic has plenty of levels. Use unique levelIds (e.g. L1 through L50) across all units. Keep level titles concise.`;
   const user = `Subject: ${subject}\n\nMaterial:\n${extractedText.slice(0, 120000)}`;
 
   const response = await withRetry(async () => {

@@ -2,7 +2,6 @@
 
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { motion } from "framer-motion";
 
 const ACCEPT = {
   "application/pdf": [".pdf"],
@@ -14,6 +13,7 @@ interface UploadZoneProps {
   onFileSelect: (file: File | null, pastedText: string) => void;
   onSubjectChange: (subject: string) => void;
   subject: string;
+  selectedFile: File | null;
   disabled?: boolean;
 }
 
@@ -21,6 +21,7 @@ export function UploadZone({
   onFileSelect,
   onSubjectChange,
   subject,
+  selectedFile,
   disabled = false,
 }: UploadZoneProps) {
   const [pastedText, setPastedText] = useState("");
@@ -94,17 +95,37 @@ export function UploadZone({
       </div>
 
       {!usePaste ? (
-        <div
-          {...getRootProps()}
-          className={`rounded-2xl border-2 border-dashed p-8 text-center transition-colors ${
-            isDragActive ? "border-teal bg-teal/10" : "border-white/20 bg-navy-light/30 hover:border-teal/50"
-          } ${disabled ? "opacity-60 pointer-events-none" : "cursor-pointer"}`}
-        >
-          <input {...getInputProps()} />
-          <p className="text-white/80 font-body">
-            {isDragActive ? "Drop the file here…" : "Drag & drop a PDF, .docx, or .txt file here, or click to browse"}
-          </p>
-          <p className="text-sm text-white/50 mt-1">PDF, .docx, or .txt only</p>
+        <div className="space-y-2">
+          <div
+            {...getRootProps()}
+            className={`rounded-2xl border-2 border-dashed p-8 text-center transition-colors ${
+              isDragActive ? "border-teal bg-teal/10" : "border-white/20 bg-navy-light/30 hover:border-teal/50"
+            } ${disabled ? "opacity-60 pointer-events-none" : "cursor-pointer"}`}
+          >
+            <input {...getInputProps()} />
+            <p className="text-white/80 font-body">
+              {isDragActive ? "Drop the file here…" : "Drag & drop a PDF, .docx, or .txt file here, or click to browse"}
+            </p>
+            <p className="text-sm text-white/50 mt-1">PDF, .docx, or .txt only</p>
+          </div>
+          {selectedFile && (
+            <div className="flex items-center justify-between gap-3 rounded-xl bg-teal/15 border border-teal/40 px-4 py-2.5">
+              <p className="text-teal font-body text-sm font-medium truncate flex-1 min-w-0" title={selectedFile.name}>
+                📄 {selectedFile.name}
+              </p>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onFileSelect(null, "");
+                }}
+                disabled={disabled}
+                className="shrink-0 text-white/70 hover:text-white text-sm font-body underline"
+              >
+                Remove
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <textarea

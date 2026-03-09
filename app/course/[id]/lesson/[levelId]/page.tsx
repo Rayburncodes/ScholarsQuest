@@ -11,6 +11,7 @@ import {
   getStoredQuestions,
   setStoredQuestions,
   setLevelProgress,
+  isLevelUnlocked,
 } from "@/lib/courseStore";
 import type { Question } from "@/types";
 
@@ -79,8 +80,12 @@ export default function LessonPage() {
       setLoadError("Level not found");
       return;
     }
+    if (!isLevelUnlocked(course, levelId)) {
+      router.replace(`/course/${courseId}`);
+      return;
+    }
     fetchQuestions();
-  }, [course, level, fetchQuestions]);
+  }, [course, level, levelId, courseId, router, fetchQuestions]);
 
   const handleAnswer = useCallback((correct: boolean) => {
     setAnsweredCurrent(true);
