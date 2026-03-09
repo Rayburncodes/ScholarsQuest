@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #0F1B2D;
+  --teal: #00D4AA;
+  --amber: #FFB347;
+  --navy-light: #1A2A42;
+}
+
+body {
+  @apply bg-navy text-white font-body antialiased min-h-screen;
+}
+
+@keyframes burst {
+  0% { transform: scale(0); opacity: 1; }
+  50% { opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-burst {
+  animation: burst 0.6s ease-out forwards;
+}
+
+.font-heading {
+  font-family: var(--font-nunito), sans-serif;
+}
+
+.font-body {
+  font-family: var(--font-dm-sans), sans-serif;
+}
